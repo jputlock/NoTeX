@@ -1,4 +1,4 @@
-*.out
+src/CMakeLists.txt
 target/
 src/cmake-build-debug/
 src/.idea/
