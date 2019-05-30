@@ -5,5 +5,7 @@ NoTeX is a lightweight TeX editor made for Computer Science and Mathematics stud
 ## Development
 1. Create a `build` folder.
 
-2. Build by changing directory into `build` and running `cmake ..; make; ./NoTeX`.
+2. Build by changing directory into `build` and running `cmake ..; make`.
+
+3. Run with `./NoTeX`
 
