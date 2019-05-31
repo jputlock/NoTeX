@@ -3,9 +3,18 @@
 #include <unistd.h>
 #include <string>
 
-/*
-
-*/
+/** @brief Converts a string of TeX into an SVG at file denoted by string
+ * file_out.
+ *
+ * @param tex_to_compile - the TeX to compile in char* format.
+ * @param file_out - the path to where the SVG file should be saved.
+ *
+ * The TeX is converted into a pdf via PDFLatex and then converted from PDF
+ * to SVG via the open source PDF to SVG converter, pdf2svg.
+ *
+ * @return the exit code denoting whether or not it was successful.
+ *
+ */
 int create_svg(char* tex_to_compile, char* file_out){
     int pid = fork();
 
@@ -14,15 +23,19 @@ int create_svg(char* tex_to_compile, char* file_out){
         char* args[] = {(char*)"pdflatex", (char*)"-interaction=nonstopmode", (char*)"-halt-on-error", tex_to_compile, NULL};
 
         // call PDFLatex to compile into a standalone PDF
-        execvp(args[0], args);
+        int exit_code = execvp(args[0], args);
 
-        return EXIT_SUCCESS;
+        return exit_code;
 
     }
     int status;
 
     // wait until the PDF is compiled
     waitpid(pid, &status, 0);
+    if (status == -1){
+        perror("PDF compilation failed");
+        return status;
+    }
 
     pid = fork();
     if (pid == 0){
@@ -32,21 +45,25 @@ int create_svg(char* tex_to_compile, char* file_out){
         char* args[] = {(char*)"pdf2svg", pdf_name, file_out, NULL};
 
         // Convert PDF to SVG file
-        execvp(args[0], args);
+        int exit_code = execvp(args[0], args);
 
-        return EXIT_SUCCESS;
+        return exit_code;
     }
 
     // Wait for the SVG to be generated
     waitpid(pid, &status, 0);
+    if (status == -1){
+        perror("SVG generation failed");
+        return status;
+    }
 
     pid = fork();
     if(pid == 0){
 
         char* args[] = {(char*)"rm", (char*)"standalone.aux", (char*)"standalone.pdf", (char*)"standalone.log", NULL};
-        execvp(args[0], args);
+        int exit_code = execvp(args[0], args);
 
-        return EXIT_SUCCESS;
+        return exit_code;
     }
 
     std::cout << "Operation finished. See \"" << file_out << "\"" << std::endl;
@@ -56,10 +73,11 @@ int create_svg(char* tex_to_compile, char* file_out){
 
 int main(int argc, char** argv) {
 
-    char* tex = (char*)"\\documentclass{standalone}\\usepackage{amsmath}\\begin{document} $\\dfrac{x}{y+3}$ \\end{document}";
-
     char* file_out;
     int exit_code;
+
+    char* tex = (char*)"\\documentclass{standalone}\\usepackage{amsmath}\\begin{document} $\\dfrac{x}{y+3}$ \\end{document}";
+
     if (argc == 2){
         file_out = argv[1];
         exit_code = create_svg(tex, file_out);
