@@ -1,7 +1,5 @@
-#include <iostream>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <string>
+
+#include "pdf2svg.h"
 
 /** @brief Converts a string of TeX into an SVG at file denoted by string
  * file_out.
@@ -42,7 +40,9 @@ int create_svg(char* tex_to_compile, char* file_out){
 
         char* pdf_name = (char*)"standalone.pdf";
 
-        char* args[] = {(char*)"pdf2svg", pdf_name, file_out, NULL};
+        char* args[] = {(char*)"./pdf2svg", pdf_name, file_out, NULL};
+
+        convertPDFtoSVG(3, args);
 
         // Convert PDF to SVG file
         int exit_code = execvp(args[0], args);
@@ -72,6 +72,8 @@ int create_svg(char* tex_to_compile, char* file_out){
 }
 
 int main(int argc, char** argv) {
+
+    lol();
 
     char* file_out;
     int exit_code;

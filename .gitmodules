@@ -1,0 +1,3 @@
+[submodule "include/pdf2svg"]
+	path = include/pdf2svg
+	url = git@github.com:team-notex/pdf2svg.git

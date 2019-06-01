@@ -1,5 +1,4 @@
-src/CMakeLists.txt
 target/
-src/cmake-build-debug/
-src/.idea/
+cmake-build-debug/
+.idea/
 build/
