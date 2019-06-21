@@ -1,5 +1,9 @@
 
-#include "pdf2svg.h"
+#include <iostream>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <gtkmm.h>
+#include "Editor.h"
 
 /** @brief Converts a string of TeX into an SVG at file denoted by string
  * file_out.
@@ -13,6 +17,8 @@
  * @return the exit code denoting whether or not it was successful.
  *
  */
+
+
 int create_svg(char* tex_to_compile, char* file_out){
     int pid = fork();
 
@@ -40,9 +46,7 @@ int create_svg(char* tex_to_compile, char* file_out){
 
         char* pdf_name = (char*)"standalone.pdf";
 
-        char* args[] = {(char*)"./pdf2svg", pdf_name, file_out, NULL};
-
-        convertPDFtoSVG(3, args);
+        char* args[] = {(char*)"pdf2svg", pdf_name, file_out, NULL};
 
         // Convert PDF to SVG file
         int exit_code = execvp(args[0], args);
@@ -73,12 +77,16 @@ int create_svg(char* tex_to_compile, char* file_out){
 
 int main(int argc, char** argv) {
 
-    lol();
+    auto app = Gtk::Application::create(argc, argv, "org.gtkmm.examples.base");
+
+    Editor editor;
+    editor.set_default_size(200, 200);
 
     char* file_out;
     int exit_code;
 
-    char* tex = (char*)"\\documentclass{standalone}\\usepackage{amsmath}\\begin{document} $\\dfrac{x}{y+3}$ \\end{document}";
+    char* tex = (char*)R"(\documentclass{standalone}\usepackage{amsmath}
+                          \begin{document} $\dfrac{x}{y+3}$ \end{document})";
 
     if (argc == 2){
         file_out = argv[1];
@@ -89,5 +97,6 @@ int main(int argc, char** argv) {
 
     std::cout << "Function create_svg() exited with code: " << exit_code << std::endl;
 
-    return 0;
+    return app->run(editor);
+
 }

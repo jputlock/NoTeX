@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <iostream>
 #include <sys/wait.h>
 #include <unistd.h>
 
