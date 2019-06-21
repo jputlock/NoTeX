@@ -37,14 +37,10 @@ gchar *getAbsoluteFileName(const gchar *fileName)
 }
 // End theft from ePDFview
 
-int lol(){
-    return 2;
-}
-
 
 int convertPage(PopplerPage *page, const char* svgFilename)
 {
-	// Poppler stuff 
+	// Poppler stuff
 	double width, height;
 
 	// Cairo stuff
@@ -71,18 +67,18 @@ int convertPage(PopplerPage *page, const char* svgFilename)
 
 	// Close the PDF file
 	g_object_unref(page);
-	
-	return 0;     
+
+	return 0;
 }
 
-int convertPDFtoSVG(int argn, char *args[])
+int pdf2svg(int argn, char *args[])
 {
 	// Poppler stuff
 	PopplerDocument *pdffile;
 	PopplerPage *page;
 
 	// Initialise the GType library
-//	g_type_init ();
+	g_type_init ();
 
 	// Get command line arguments
 	if ((argn < 3)||(argn > 4)) {

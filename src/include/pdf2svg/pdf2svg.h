@@ -9,13 +9,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <sys/wait.h>
-#include <unistd.h>
-
-int convertPDFtoSVG(int argn, char *args[]);
+gchar *getAbsoluteFileName(const gchar *fileName);
 
 int convertPage(PopplerPage *page, const char* svgFilename);
 
-gchar *getAbsoluteFileName(const gchar *fileName);
-
-int lol();
+int pdf2svg(int argn, char *args[]);
