@@ -77,10 +77,6 @@ int main(int argc, char** argv) {
     // Editor editor;
     // editor.set_default_size(200, 200);
 
-    std::printf("%c[%dmHello there.%c[0m\n", 0x1B, 32, 0x1B);
-
-    std::printf("\t\t%c[%dmGeneral Kenobi!%c[0m\n", 0x1B, 33, 0x1B);
-
     char* file_out;
     int exit_code;
 
