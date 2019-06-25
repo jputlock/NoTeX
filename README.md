@@ -20,6 +20,8 @@ NoTeX is a lightweight TeX editor made for Computer Science and Mathematics stud
 ## Development
 Interested in development? Great! Below are a set of instructions to quick start you into the development process! You can also join the [Discord](https://discord.gg/wGJrKBz) for communicating with other developers!
 
+### Quick Setup
+
 1. [Fork the repository](https://help.github.com/en/articles/fork-a-repo#fork-an-example-repository).
 
 2. [Clone the repository](https://help.github.com/en/articles/cloning-a-repository) onto your machine.
@@ -29,3 +31,11 @@ Interested in development? Great! Below are a set of instructions to quick start
 4. Build by changing directory into `build` and run `cmake ..; make`.
 
 5. Run with `./NoTeX`
+
+### Sharing your Contributions
+
+1. Go to the [main repository](https://github.com/team-notex/NoTeX).
+
+2. Click the "Pull Requests" tab.
+
+3. Follow [these instructions](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork).
