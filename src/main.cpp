@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <gtkmm.h>
 
-#include "GUI/editor.h"
+#include "GUI/editorapp.h"
 #include "CompileConfig.h"
 #include "include/pdf2svg/pdf2svg.c"
 
@@ -74,10 +74,11 @@ int main(int argc, char** argv) {
 
     Gtk::Main kit(argc, argv);
 
-    Editor editor;
-    editor.set_default_size(400, 400);
+    auto application = EditorApplication::create();
 
-    Gtk::Main::run(editor);
+    const int status = application->run(argc, argv);
+    std::cout << status << std::endl;
+//  return status;
 
     /*
     char* file_out;

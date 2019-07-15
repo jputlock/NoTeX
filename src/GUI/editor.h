@@ -5,10 +5,7 @@
 #ifndef NOTEX_EDITOR_H
 #define NOTEX_EDITOR_H
 
-#include <gtkmm/window.h>
-#include <gtkmm/button.h>
-#include <gtkmm/textview.h>
-#include <gtkmm/box.h>
+#include <gtkmm.h>
 
 #include "clickableimage.h"
 
@@ -24,9 +21,19 @@ protected:
 
     //Member widgets:
     ClickableImage m_img;
-    Gtk::Box m_box;
+
+    Gtk::Fixed m_fixed;
     Gtk::Button m_button;
     Gtk::TextView m_textview;
+
+    // menubar items
+    Gtk::MenuBar m_menuBar;
+    Gtk::MenuItem m_menuFile;
+    Gtk::Menu m_subMenuFiles;
+    Gtk::MenuItem m_menuNew, m_menuOpen, m_menuSave;
+
+    // in case we need a separator in the submenu
+    Gtk::SeparatorMenuItem hline;
 };
 
 

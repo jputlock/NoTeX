@@ -9,6 +9,7 @@ add_subdirectory(include/pdf2svg)
 add_library(Source
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/editor.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/editor.h
+		${CMAKE_CURRENT_SOURCE_DIR}/GUI/editorapp.h
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/clickableimage.h
 )
 
