@@ -31,7 +31,18 @@
 *.out
 *.app
 
+# Text files
 *.txt
+
+# CMake files
+CMakeFiles/
+*.cmake
+
+# Make files
+Makefile
+
+# Allow CMakeLists.txt
+!CMakeLists.txt
 
 # JetBrains Targets
 cmake-build-debug/

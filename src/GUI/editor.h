@@ -36,6 +36,7 @@ protected:
     // in case we need a separator in the submenu
     Gtk::SeparatorMenuItem hline;
 private:
+    void initialize_menubar();
     void on_menu_file_new();
     void on_menu_file_open();
     void on_menu_file_save();

@@ -11,6 +11,12 @@ configure_file(
     "${PROJECT_BINARY_DIR}/CompileConfig.h"
 )
 
+option(DEBUG "Print debug output and statistics" ON)
+
+if(DEBUG)
+	add_definitions(-DDEBUG)
+endif(DEBUG)
+
 #FIND_PACKAGE(PkgConfig REQUIRED)
 
 # FIND GTK

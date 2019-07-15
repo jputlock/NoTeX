@@ -5,18 +5,20 @@ FIND_PACKAGE(PkgConfig REQUIRED)
 pkg_check_modules(GTK gtkmm-3.0)
 
 add_subdirectory(include/pdf2svg)
+add_subdirectory(GUI)
+add_subdirectory(Containers)
 
 add_library(Source
-		${CMAKE_CURRENT_SOURCE_DIR}/GUI/editor.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/GUI/editor.h
-		${CMAKE_CURRENT_SOURCE_DIR}/GUI/editorapp.h
-		${CMAKE_CURRENT_SOURCE_DIR}/GUI/clickableimage.h
+		${CMAKE_CURRENT_SOURCE_DIR}/debug.h
 )
 
 # LINK GTK and Converter
 target_link_libraries(Source
     Converter
+	GUI
+	Containers
 )
+
 target_link_libraries(Source
     ${GTK_LIBRARIES}
 )

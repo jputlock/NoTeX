@@ -72,6 +72,8 @@ int create_svg(char* tex_to_compile, char* file_out){
 
 int main(int argc, char** argv) {
 
+    std::cout << "NoTeX version " << NoTeX_VERSION_MAJOR << "." << NoTeX_VERSION_MINOR << std::endl;
+
     Gtk::Main kit(argc, argv);
 
     auto application = EditorApplication::create();
