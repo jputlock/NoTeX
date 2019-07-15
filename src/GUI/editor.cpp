@@ -25,6 +25,7 @@ Editor::Editor() : m_textview(), m_button("Save file"), m_img("new.svg") {
     this->m_menuBar.append(this->m_menuFile);
 
     // Set up file submenu
+
     this->m_menuFile.set_submenu(this->m_subMenuFiles);
     this->m_menuNew.set_label("New");
     this->m_menuOpen.set_label("Open");
@@ -32,6 +33,10 @@ Editor::Editor() : m_textview(), m_button("Save file"), m_img("new.svg") {
     this->m_subMenuFiles.append(this->m_menuNew);
     this->m_subMenuFiles.append(this->m_menuOpen);
     this->m_subMenuFiles.append(this->m_menuSave);
+
+    this->m_menuNew.signal_activate().connect(sigc::mem_fun(*this, &Editor::on_menu_file_new));
+    this->m_menuOpen.signal_activate().connect(sigc::mem_fun(*this, &Editor::on_menu_file_open));
+    this->m_menuSave.signal_activate().connect(sigc::mem_fun(*this, &Editor::on_menu_file_save));
 
     // Add everything to the box
     this->m_fixed.put(this->m_menuBar, 0, 0);
@@ -45,3 +50,15 @@ Editor::Editor() : m_textview(), m_button("Save file"), m_img("new.svg") {
 }
 
 Editor::~Editor() {}
+
+void Editor::on_menu_file_new() {
+    std::cout << "Selected new file" << std::endl;
+}
+
+void Editor::on_menu_file_open() {
+    std::cout << "Selected open file" << std::endl;
+}
+
+void Editor::on_menu_file_save() {
+    std::cout << "Selected save file" << std::endl;
+}

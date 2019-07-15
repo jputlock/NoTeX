@@ -6,10 +6,11 @@
 #define NOTEX_EDITOR_H
 
 #include <gtkmm.h>
+#include <iostream>
 
 #include "clickableimage.h"
 
-class Editor : public Gtk::Window {
+class Editor : public Gtk::ApplicationWindow {
 
 public:
     Editor();
@@ -34,6 +35,10 @@ protected:
 
     // in case we need a separator in the submenu
     Gtk::SeparatorMenuItem hline;
+private:
+    void on_menu_file_new();
+    void on_menu_file_open();
+    void on_menu_file_save();
 };
 
 

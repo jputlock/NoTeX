@@ -25,8 +25,4 @@ public:
     static Glib::RefPtr<EditorApplication> create(){
         return Glib::RefPtr<EditorApplication>(new EditorApplication());
     }
-private:
-    void on_menu_file_new();
-    void on_menu_file_open();
-    void on_menu_file_save();
 };
