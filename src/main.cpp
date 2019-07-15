@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <gtkmm.h>
 
-#include "Editor.h"
+#include "GUI/editor.h"
 #include "CompileConfig.h"
 #include "include/pdf2svg/pdf2svg.c"
 
@@ -72,11 +72,14 @@ int create_svg(char* tex_to_compile, char* file_out){
 
 int main(int argc, char** argv) {
 
-    // auto app = Gtk::Application::create(argc, argv, "org.gtkmm.examples.base");
+    Gtk::Main kit(argc, argv);
 
-    // Editor editor;
-    // editor.set_default_size(200, 200);
+    Editor editor;
+    editor.set_default_size(400, 400);
 
+    Gtk::Main::run(editor);
+
+    /*
     char* file_out;
     int exit_code;
 
@@ -92,8 +95,7 @@ int main(int argc, char** argv) {
     }
 
     std::cout << "Function create_svg() exited with code: " << exit_code << std::endl;
-
-    // return app->run(editor);
+    */
 
     return 0;
 }

@@ -7,8 +7,9 @@ pkg_check_modules(GTK gtkmm-3.0)
 add_subdirectory(include/pdf2svg)
 
 add_library(Source
-    ${CMAKE_CURRENT_SOURCE_DIR}/Editor.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Editor.h
+		${CMAKE_CURRENT_SOURCE_DIR}/GUI/editor.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/GUI/editor.h
+		${CMAKE_CURRENT_SOURCE_DIR}/GUI/clickableimage.h
 )
 
 # LINK GTK and Converter

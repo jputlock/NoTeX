@@ -7,9 +7,12 @@
 
 #include <gtkmm/window.h>
 #include <gtkmm/button.h>
+#include <gtkmm/textview.h>
+#include <gtkmm/box.h>
 
-class Editor : public Gtk::Window
-{
+#include "clickableimage.h"
+
+class Editor : public Gtk::Window {
 
 public:
     Editor();
@@ -20,7 +23,10 @@ protected:
     void on_button_clicked();
 
     //Member widgets:
+    ClickableImage m_img;
+    Gtk::Box m_box;
     Gtk::Button m_button;
+    Gtk::TextView m_textview;
 };
 
 
