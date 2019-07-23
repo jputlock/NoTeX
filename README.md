@@ -3,7 +3,7 @@ NoTeX is a lightweight TeX editor made for Computer Science and Mathematics stud
 
 
 ## Development
-Interested in development? Great! Below are a set of instructions to quick start you into the development process! You can also join the [Discord](https://discord.gg/wGJrKBz) for communicating with other developers!
+Interested in development? Great! Below are a set of instructions to quick start you into the development process. You can also join the [Discord](https://discord.gg/wGJrKBz) for communicating with other developers.
 
 ### Quick Setup
 
@@ -13,9 +13,11 @@ Interested in development? Great! Below are a set of instructions to quick start
 
 3. Create a `build` folder.
 
-4. Build by changing directory into `build` and run `cmake ..; make`.
+4. Make your changes to the code in `src`.
 
-5. Run with `./NoTeX`
+5. Build by changing directory into `build` and run `cmake ..; make`.
+
+6. Run with `./NoTeX`
 
 ### Sharing your Contributions
 
@@ -30,14 +32,14 @@ Interested in development? Great! Below are a set of instructions to quick start
 
 1. June 28th - Created a line of communication between developers.
 
-2. July 12th - Finalizing the choices in data structure for overlaying text and images with a partial (or complete!) implementation. Have looked into GTK, played around with it, and looked at how to create streamlined GTK development.
+2. July 12th - ~~Finalizing the choices in data structure for overlaying text and images with a partial (or complete!) implementation.~~ (Realized this didn't make sense without first looking into how GTK worked. Spent this time looking into GTK and playing around with it instead.) Have looked into GTK, played around with it, and looked at how to create streamlined GTK development.
 
 3. July 19th - Finish basic GUI that allows for text editing / saving, as well as inserting and resizing images.
 
-4. July 26th - _At least_ started integration between images and text to lead into the core feature of the platform.
+4. July 26th - Implement hotkeys, a basic settings menu, and editing / opening / saving.
 
-5. August 2nd - Working integration between images and text, clipboard usage, redo/undo.
+5. August 2nd - Continue looking into how to integrate the text and images in GTK.
 
-6. August 9th - Working demo with image/text integration, clipboard usage, redo/undo, saving and loading, and possibly other features?
+6. August 9th - Crude implementation of the core feature implemented.
 
-7. August 23rd - More polished GUI + cleaner runtimes and ensuring documentation is there.
+7. August 23rd - Core feature fully fleshed out with a more polished GUI. Documentation is present and generated.
