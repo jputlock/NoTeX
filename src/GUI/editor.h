@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "clickableimage.h"
+#include "notexview.h"
 
 class Editor : public Gtk::ApplicationWindow {
 
@@ -20,12 +21,10 @@ protected:
     //Signal handlers:
     void on_button_clicked();
 
-    //Member widgets:
-    ClickableImage m_img;
-
+    // Member items
+    std::vector<NotexView*> editing_windows;
+    NotexView* current_editing_window;
     Gtk::Fixed m_fixed;
-    Gtk::Button m_button;
-    Gtk::TextView m_textview;
 
     // menubar items
     Gtk::MenuBar m_menuBar;
@@ -34,7 +33,7 @@ protected:
     Gtk::MenuItem m_menuNew, m_menuOpen, m_menuSave;
 
     // in case we need a separator in the submenu
-    Gtk::SeparatorMenuItem hline;
+    // Gtk::SeparatorMenuItem hline;
 private:
     void init_menubar();
     void on_menu_file_new();

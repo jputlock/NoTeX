@@ -9,6 +9,8 @@ add_library(GUI
 		${CMAKE_CURRENT_SOURCE_DIR}/editor.h
 		${CMAKE_CURRENT_SOURCE_DIR}/editorapp.h
 		${CMAKE_CURRENT_SOURCE_DIR}/clickableimage.h
+		${CMAKE_CURRENT_SOURCE_DIR}/notexview.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/notexview.h
 )
 
 # LINK GTK
