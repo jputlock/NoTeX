@@ -2,11 +2,7 @@
 // Created by jputlock on 6/1/19.
 //
 
-#include <iostream>
-#include <fstream>
-
 #include "editor.h"
-#include "../debug.h"
 
 Editor::Editor() : Gtk::ApplicationWindow() {
 
@@ -61,7 +57,8 @@ void Editor::init_menubar() {
     this->m_menuOpen.signal_activate().connect(sigc::mem_fun(*this, &Editor::on_menu_file_open));
     this->m_menuSave.signal_activate().connect(sigc::mem_fun(*this, &Editor::on_menu_file_save));
 #ifdef DEBUG
-    debug_print("Menubar finished initializing");
+    // Debug::debug_print("Menubar finished initializing\n");
+    std::cout << "Menubar finished initializing\n";
 #endif
     // code here
 }

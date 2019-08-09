@@ -7,8 +7,8 @@
 
 #include <gtkmm.h>
 #include <iostream>
+#include <fstream>
 
-#include "clickableimage.h"
 #include "notexview.h"
 
 class Editor : public Gtk::ApplicationWindow {
