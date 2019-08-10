@@ -14,7 +14,7 @@ public:
     ClickableImage(const std::string& file_name,
                                 const Glib::ustring& tex) : Gtk::EventBox() {
         // add the image
-        this->img = Gtk::Image(file_name);
+        this->img.set(file_name);
         this->add(img);
         this->img.show();
 

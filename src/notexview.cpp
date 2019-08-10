@@ -72,8 +72,9 @@ bool NotexView::scan_for_tex() {
 
     std::cout << "\nNew text:" << textBuffer->get_text() << std::endl;
 
-    auto img = Gtk::make_managed<Gtk::Image>();
-    img->set(filename);
+    // auto img = Gtk::make_managed<Gtk::Image>();
+    // img->set(filename);
+    auto img = Gtk::make_managed<ClickableImage>(filename, tex);
 
     auto anc = textBuffer->create_child_anchor(mark_start->get_iter());
     this->m_textview.add_child_at_anchor(*img, anc);
