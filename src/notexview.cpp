@@ -19,64 +19,70 @@ NotexView::NotexView() : Gtk::ScrolledWindow() {
 
     this->m_textview.set_buffer(textBuffer);
 
-    textBuffer->signal_insert().connect(sigc::mem_fun(*this,
-        &NotexView::scan_for_tex));
+    // textBuffer->signal_insert().connect(sigc::mem_fun(*this,
+        // &NotexView::scan_for_tex));
 
+    Glib::signal_idle().connect( sigc::mem_fun(*this, &NotexView::scan_for_tex) );
+
+    this->count = 0;
     this->add(m_textview);
 }
 
 NotexView::~NotexView() { }
 
-void NotexView::scan_for_tex(const Gtk::TextBuffer::iterator& pos,
-                                    const Glib::ustring& inserted, int bytes) {
+bool NotexView::scan_for_tex() {
     auto textBuffer = this->m_textview.get_buffer();
 
     // todo: implement the data structure to add marks where start/end points are
 
-    std::string text = textBuffer->get_text();
-
-    int count = 0;
     size_t start = 0, end = 0;
-    bool left = true;
 
     // iterate through the buffer
-    while (start != std::string::npos) {
-        start = text.find("\\(", end);
-        if (start == std::string::npos) {
-            break;
-        }
-        end = text.find("\\)", start);
-        if (end == std::string::npos) {
-            break;
-        }
-        end += 2;
-
-        // grab the iterators at the locations
-        auto start_iter = textBuffer->get_iter_at_offset(start);
-        auto end_iter = textBuffer->get_iter_at_offset(end);
-        // grab the slice and render it
-        auto tex = textBuffer->get_text(start_iter, end_iter);
-
-        std::cout << "Rendering \"" + tex + "\"" << std::endl;
-
-        std::string filename;
-        this->render_tex(tex, count++, filename);
-
-        auto mark_start = textBuffer->create_mark("startTex", start_iter);
-        auto mark_end = textBuffer->create_mark("endTex", end_iter);
-
-        textBuffer->erase(start_iter, end_iter);
-        std::cout << "\nNew text:" << textBuffer->get_text() << std::endl;
-
-        auto img = Gtk::make_managed<Gtk::Image>();
-        img->set(filename);
-
-        auto anc = textBuffer->create_child_anchor(mark_start->get_iter());
-        this->m_textview.add_child_at_anchor(*img, anc);
-        img->show();
+    start = textBuffer->get_text().find("\\(");
+    if (start == std::string::npos) {
+        return true;
     }
+    end = textBuffer->get_text().find("\\)");
+    if (end == std::string::npos) {
+        return true;
+    }
+    end += 2;
 
+    // todo: this count system doesn't work if you are inserting tex before another block of tex already rendered
+    // shift the indices by the number of rendered images before this one
+    start += count;
+    end += count;
 
+    // grab the iterators at the locations
+    auto start_iter = textBuffer->get_iter_at_offset(start);
+    auto end_iter = textBuffer->get_iter_at_offset(end);
+
+    std::string tex = textBuffer->get_text(start_iter, end_iter);
+
+    std::cout << "Rendering \"" + tex + "\"" << std::endl;
+
+    std::string filename;
+    this->render_tex(tex, count++, filename);
+    std::cout << "filename = " << filename << std::endl;
+
+    auto mark_start = textBuffer->create_mark("startTex", start_iter);
+    auto mark_end = textBuffer->create_mark("endTex", end_iter);
+
+    textBuffer->erase(mark_start->get_iter(), mark_end->get_iter());
+
+    std::cout << "\nNew text:" << textBuffer->get_text() << std::endl;
+
+    auto img = Gtk::make_managed<Gtk::Image>();
+    img->set(filename);
+
+    auto anc = textBuffer->create_child_anchor(mark_start->get_iter());
+    this->m_textview.add_child_at_anchor(*img, anc);
+    img->show();
+
+    textBuffer->delete_mark(mark_start);
+    textBuffer->delete_mark(mark_end);
+
+    return true;
 }
 
 /** @brief Converts a string of TeX into an SVG at file denoted by string
