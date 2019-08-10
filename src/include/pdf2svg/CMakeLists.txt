@@ -18,7 +18,6 @@ message("POPPLER GLIB VERSION IS " ${POPPLERGLIB_VERSION})
 
 add_library(Converter
     ${CMAKE_CURRENT_SOURCE_DIR}/pdf2svg.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/pdf2svg.h
 )
 
 target_link_libraries(Converter ${DEP_LIBS})

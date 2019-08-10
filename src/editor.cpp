@@ -2,11 +2,7 @@
 // Created by jputlock on 6/1/19.
 //
 
-#include <iostream>
-#include <fstream>
-
 #include "editor.h"
-#include "../debug.h"
 
 Editor::Editor() : Gtk::ApplicationWindow() {
 
@@ -61,7 +57,8 @@ void Editor::init_menubar() {
     this->m_menuOpen.signal_activate().connect(sigc::mem_fun(*this, &Editor::on_menu_file_open));
     this->m_menuSave.signal_activate().connect(sigc::mem_fun(*this, &Editor::on_menu_file_save));
 #ifdef DEBUG
-    debug_print("Menubar finished initializing");
+    // Debug::debug_print("Menubar finished initializing\n");
+    std::cout << "Menubar finished initializing\n";
 #endif
     // code here
 }
@@ -79,7 +76,9 @@ void Editor::on_menu_file_new() {
     NotexView* editing_window = Gtk::make_managed<NotexView>();
     this->editing_windows.push_back(editing_window);
     this->m_fixed.put(*editing_window, 0, 30);
-    editing_window->set_text("This is a new file. Welcome to NoTeX!");
+    editing_window->set_text("Welcome to NoTeX. Please note that this program"
+    " does not recognize TeX delimiters ($ $ and $$ $$) to start mathmode. "
+                                        " Please use the LaTeX delimiters.");
     this->current_editing_window = editing_window;
 }
 

@@ -39,11 +39,3 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         "${PROJECT_BINARY_DIR}"
 )
-
-
-# LINK GTK
-#target_link_libraries(${PROJECT_NAME} ${GTK_LIBRARIES})
-#target_include_directories(${PROJECT_NAME}
-#    INTERFACE
-#        ${GTK_INCLUDE_DIRS}
-#)
