@@ -21,6 +21,6 @@ public:
 
 protected:
     Gtk::TextView m_textview;
-    int count;
+    int m_count;
 
 };

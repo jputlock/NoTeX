@@ -24,7 +24,7 @@ NotexView::NotexView() : Gtk::ScrolledWindow() {
 
     Glib::signal_idle().connect( sigc::mem_fun(*this, &NotexView::scan_for_tex) );
 
-    this->count = 0;
+    this->m_count = 0;
     this->add(m_textview);
 }
 
@@ -48,10 +48,13 @@ bool NotexView::scan_for_tex() {
     }
     end += 2;
 
-    // todo: this count system doesn't work if you are inserting tex before another block of tex already rendered
-    // shift the indices by the number of rendered images before this one
-    start += count;
-    end += count;
+    // shift the indices by the number of pictures before it
+    for (int i = 0; i < start; i++) {
+        if (textBuffer->get_iter_at_offset(i).get_char() == 0xFFFC ) {
+            start++;
+            end++;
+        }
+    }
 
     // grab the iterators at the locations
     auto start_iter = textBuffer->get_iter_at_offset(start);
@@ -59,28 +62,36 @@ bool NotexView::scan_for_tex() {
 
     std::string tex = textBuffer->get_text(start_iter, end_iter);
 
+#ifdef DEBUG
     std::cout << "Rendering \"" + tex + "\"" << std::endl;
+#endif
 
     std::string filename;
-    this->render_tex(tex, count++, filename);
+    this->render_tex(tex, this->m_count, filename);
     std::cout << "filename = " << filename << std::endl;
 
-    auto mark_start = textBuffer->create_mark("startTex", start_iter);
+    // note: this mark doesnt follow the picture if text inserted in the exact char before the picture
+    // but this shouldn't be an issue once we implement picture -> tex functionality
+    auto mark_start = textBuffer->create_mark("startTex" + this->m_count, start_iter);
     auto mark_end = textBuffer->create_mark("endTex", end_iter);
+
+    this->m_count++;
 
     textBuffer->erase(mark_start->get_iter(), mark_end->get_iter());
 
+#ifdef DEBUG
     std::cout << "\nNew text:" << textBuffer->get_text() << std::endl;
+#endif
 
-    // auto img = Gtk::make_managed<Gtk::Image>();
-    // img->set(filename);
     auto img = Gtk::make_managed<ClickableImage>(filename, tex);
 
+    // todo: cleanup ClickableImage, Anchor, and Mark on deletion
     auto anc = textBuffer->create_child_anchor(mark_start->get_iter());
     this->m_textview.add_child_at_anchor(*img, anc);
     img->show();
 
-    textBuffer->delete_mark(mark_start);
+    // mark_start->set_visible(true);
+
     textBuffer->delete_mark(mark_end);
 
     return true;
