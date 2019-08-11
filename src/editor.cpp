@@ -35,7 +35,14 @@ Editor::Editor() : Gtk::ApplicationWindow() {
     this->show_all_children();
 }
 
-Editor::~Editor() {}
+Editor::~Editor() {
+#ifdef DEBUG
+    std::cout << "Deleting Editor" << std::endl;
+#endif
+    for (int i = 0; i < this->editing_windows.size(); i++) {
+        delete this->editing_windows[i];
+    }
+}
 
 void Editor::init_menubar() {
 

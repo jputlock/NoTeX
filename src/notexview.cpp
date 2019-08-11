@@ -19,16 +19,22 @@ NotexView::NotexView() : Gtk::ScrolledWindow() {
 
     this->m_textview.set_buffer(textBuffer);
 
-    // textBuffer->signal_insert().connect(sigc::mem_fun(*this,
-        // &NotexView::scan_for_tex));
-
-    Glib::signal_idle().connect( sigc::mem_fun(*this, &NotexView::scan_for_tex) );
+    textBuffer->signal_end_user_action().connect(sigc::mem_fun(*this,
+        &NotexView::hook_idle));
 
     this->m_count = 0;
     this->add(m_textview);
 }
 
-NotexView::~NotexView() { }
+void NotexView::hook_idle() {
+    Glib::signal_idle().connect( sigc::mem_fun(*this, &NotexView::scan_for_tex) );
+}
+
+NotexView::~NotexView() {
+#ifdef DEBUG
+    std::cout << "Deleting NotexView" << std::endl;
+#endif
+}
 
 bool NotexView::scan_for_tex() {
     auto textBuffer = this->m_textview.get_buffer();
@@ -40,13 +46,16 @@ bool NotexView::scan_for_tex() {
     // iterate through the buffer
     start = textBuffer->get_text().find("\\(");
     if (start == std::string::npos) {
-        return true;
+        return false;
     }
     end = textBuffer->get_text().find("\\)");
     if (end == std::string::npos) {
-        return true;
+        return false;
     }
     end += 2;
+
+    // todo: this is generally a slow O(n) operation, should be able to speed
+    // it up with a hashtable lookup?
 
     // shift the indices by the number of pictures before it
     for (int i = 0; i < start; i++) {
