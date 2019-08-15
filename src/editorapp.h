@@ -29,4 +29,9 @@ public:
     static Glib::RefPtr<EditorApplication> create(){
         return Glib::RefPtr<EditorApplication>(new EditorApplication());
     }
+    virtual ~EditorApplication() {
+#ifdef DEBUG
+            std::cout << "Deleting EditorApplication" << std::endl;
+#endif
+    }
 };

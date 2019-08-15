@@ -13,21 +13,10 @@ Editor::Editor() : Gtk::ApplicationWindow() {
     // Allow ClickableImages to receive input
     this->set_events(Gdk::BUTTON_PRESS_MASK);
 
-    // Set up the textview
-
-    // this->m_textview.set_resize_mode()
-    // this->m_textview.set_size_request (400, 400);
-    // this->m_textview.set_wrap_mode(Gtk::WRAP_WORD);
-    // auto m_textBuffer = Gtk::TextBuffer::create();
-    // m_textBuffer->set_text("Welcome to NoTeX!");
-    // this->m_textview.set_buffer(m_textBuffer);
-
     this->init_menubar();
 
     // Add everything to the box
     this->m_fixed.put(this->m_menuBar, 0, 0);
-    // this->m_fixed.put(this->m_textview, 0, 30);
-    // this->m_fixed.put(this->m_img, 200, 200);
 
     // Add a container to hold everything
     this->add(this->m_fixed);
@@ -35,7 +24,14 @@ Editor::Editor() : Gtk::ApplicationWindow() {
     this->show_all_children();
 }
 
-Editor::~Editor() {}
+Editor::~Editor() {
+#ifdef DEBUG
+    std::cout << "Deleting Editor" << std::endl;
+#endif
+    for (int i = 0; i < this->editing_windows.size(); i++) {
+        delete this->editing_windows[i];
+    }
+}
 
 void Editor::init_menubar() {
 
@@ -57,7 +53,6 @@ void Editor::init_menubar() {
     this->m_menuOpen.signal_activate().connect(sigc::mem_fun(*this, &Editor::on_menu_file_open));
     this->m_menuSave.signal_activate().connect(sigc::mem_fun(*this, &Editor::on_menu_file_save));
 #ifdef DEBUG
-    // Debug::debug_print("Menubar finished initializing\n");
     std::cout << "Menubar finished initializing\n";
 #endif
     // code here
@@ -110,24 +105,28 @@ void Editor::on_menu_file_open() {
 
     switch(result) {
         case (Gtk::RESPONSE_OK): {
-            std::cout << "Folder selected: " << file_chooser.get_filename()
+            std::cout << "File selected: " << file_chooser.get_filename()
                                              << std::endl;
 
             std::ifstream file_istream;
-            file_istream.open(file_chooser.get_filename());
 
-            // todo: check this section over... wrote it without access
-            // to documentation
-            char buffer[1000];
-            std::string temp_text;
-            std::string text_builder;
+            // start at the end of the file
+            file_istream.open(file_chooser.get_filename(), std::ios::ate);
+            std::streampos size = file_istream.tellg();
 
-            while (!file_istream.eof()) {
-                file_istream.read(buffer, 1000);
-                temp_text = buffer;
-                std::cout << temp_text << std::endl;
-                text_builder += temp_text;
-            }
+            // allocate space for the text
+            char* memblock = new char[size];
+
+            file_istream.seekg (0, std::ios::beg);
+            file_istream.read (memblock, size);
+
+            Glib::ustring text_builder(memblock);
+
+            free(memblock);
+
+#ifdef DEBUG
+            std::cout << "Read in: " << text_builder << std::endl;
+#endif
 
             this->current_editing_window->set_text(text_builder);
 
@@ -151,6 +150,8 @@ void Editor::on_menu_file_open() {
             break;
         }
     }
+
+    Glib::signal_idle().connect( sigc::mem_fun(*editing_window, &NotexView::scan_for_tex) );
 }
 
 /** @brief Opens a filestream to chosen file and writes the current TextView
