@@ -17,7 +17,7 @@ add_library(Source
 		${CMAKE_CURRENT_SOURCE_DIR}/debug.h
 )
 
-# LINK GTK and Converter
+# Link libraries
 target_link_libraries(Source
 	Containers
 	Converter

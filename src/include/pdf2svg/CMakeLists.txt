@@ -13,8 +13,7 @@ list(APPEND DEP_LIBS
 )
 
 # Print versions
-message("CAIRO VERSION IS " ${CAIRO_VERSION})
-message("POPPLER GLIB VERSION IS " ${POPPLERGLIB_VERSION})
+message("Building Converter (pdf2svg)")
 
 add_library(Converter
     ${CMAKE_CURRENT_SOURCE_DIR}/pdf2svg.c
