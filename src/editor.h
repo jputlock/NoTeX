@@ -1,6 +1,3 @@
-//
-// Created by jputlock on 6/1/19.
-//
 
 #ifndef NOTEX_EDITOR_H
 #define NOTEX_EDITOR_H
@@ -39,6 +36,7 @@ private:
     void on_menu_file_new();
     void on_menu_file_open();
     void on_menu_file_save();
+    void on_resize();
 };
 
 

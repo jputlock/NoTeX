@@ -4,10 +4,18 @@
 #include "include/pdf2svg/pdf2svg.c"
 
 NotexView::NotexView() : Gtk::ScrolledWindow() {
-    this->set_hexpand(false);
+    this->set_hexpand(true);
     this->set_vexpand(true);
-    this->set_size_request(1000, 1000);
+
+    this->set_size_request(-1, -1);
     this->show();
+
+    // make the view resizable
+    this->signal_check_resize().connect(
+        sigc::mem_fun(*this, &NotexView::on_resize)
+    );
+
+
 
     this->m_textview.set_editable(true);
     this->m_textview.set_cursor_visible(true);
@@ -19,15 +27,40 @@ NotexView::NotexView() : Gtk::ScrolledWindow() {
 
     this->m_textview.set_buffer(textBuffer);
 
-    textBuffer->signal_end_user_action().connect(sigc::mem_fun(*this,
-        &NotexView::hook_idle));
+    textBuffer->signal_end_user_action().connect(
+        sigc::mem_fun(*this, &NotexView::hook_idle)
+    );
 
     this->m_count = 0;
     this->add(m_textview);
 }
 
+void NotexView::on_resize() {
+    Container* editor = this->get_parent();
+
+    if ( editor ) {
+
+        // initialize just in case
+        int width = -1, height = -1;
+
+        // grab the editor's size
+        width = editor->get_allocated_width();
+        height = editor->get_allocated_height();
+
+        this->set_size_request(width, height);
+
+#ifdef DEBUG
+        std::cout << "view resized!" << std::endl;
+#endif
+
+    }
+
+}
+
 void NotexView::hook_idle() {
-    Glib::signal_idle().connect( sigc::mem_fun(*this, &NotexView::scan_for_tex) );
+    Glib::signal_idle().connect(
+        sigc::mem_fun(*this, &NotexView::scan_for_tex)
+    );
 }
 
 NotexView::~NotexView() {

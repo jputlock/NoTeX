@@ -16,6 +16,7 @@ public:
     const std::string get_text();
 
     void hook_idle();
+    void on_resize();
 
     bool scan_for_tex();
     int render_tex(const Glib::ustring& text, int num_rendered,

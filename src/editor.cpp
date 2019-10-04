@@ -1,6 +1,3 @@
-//
-// Created by jputlock on 6/1/19.
-//
 
 #include "editor.h"
 
@@ -9,6 +6,12 @@ Editor::Editor() : Gtk::ApplicationWindow() {
     // Set title and border width
     this->set_title("NoTeX");
     this->set_border_width(5);
+    this->set_default_size(500, 500);
+
+    // make the editor resizable
+    this->signal_check_resize().connect(
+        sigc::mem_fun(*this, &Editor::on_resize)
+    );
 
     // Allow ClickableImages to receive input
     this->set_events(Gdk::BUTTON_PRESS_MASK);
@@ -22,6 +25,13 @@ Editor::Editor() : Gtk::ApplicationWindow() {
     this->add(this->m_fixed);
 
     this->show_all_children();
+}
+
+void Editor::on_resize() {
+    std::cout << "editor resized!" << std::endl;
+
+    if ( current_editing_window )
+        this->current_editing_window->check_resize();
 }
 
 Editor::~Editor() {
