@@ -204,7 +204,7 @@ int NotexView::render_tex(const Glib::ustring& text, int num_rendered,
 	if (pid == 0) {
 
 		char* args[] = {(char*)"rm", (char*)"standalone.aux",
-						(char*)"standalone.pdf", (char*)"standalone.log", NULL};
+						(char*)"standalone.pdf", (char*)"standalone.log", &filename[0], NULL};
 		int exit_code = execvp(args[0], args);
 
 		return exit_code;
