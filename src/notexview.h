@@ -1,5 +1,6 @@
 
 #include <gtkmm.h>
+#include <pangomm.h>
 #include <iostream>
 #include <string>
 #include <sys/wait.h>
@@ -25,4 +26,5 @@ class NotexView : public Gtk::ScrolledWindow {
   protected:
 	Gtk::TextView m_textview;
 	int m_count;
+    unsigned int font_size;
 };

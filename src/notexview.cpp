@@ -10,6 +10,8 @@ NotexView::NotexView() : Gtk::ScrolledWindow() {
 	this->set_size_request(-1, -1);
 	this->show();
 
+	this->font_size = 12;
+
 	// make the view resizable
 	this->signal_check_resize().connect(
 		sigc::mem_fun(*this, &NotexView::on_resize));
@@ -23,6 +25,11 @@ NotexView::NotexView() : Gtk::ScrolledWindow() {
 	auto textBuffer = Gtk::TextBuffer::create();
 
 	this->m_textview.set_buffer(textBuffer);
+
+    Pango::FontDescription font = this->m_textview.get_style_context()->get_font();
+
+    font.set_size(Pango::SCALE * font_size );
+    this->m_textview.override_font(font);
 
 	textBuffer->signal_end_user_action().connect(
 		sigc::mem_fun(*this, &NotexView::hook_idle));
@@ -151,7 +158,7 @@ int NotexView::render_tex(const Glib::ustring& text, int num_rendered,
 	/* todo: append \\usepackage {package} for each package included at the top
 	 */
 	auto new_text =
-		"\\documentclass{standalone}\\usepackage{amsmath}\\begin{document}" +
+		"\\documentclass[20pt]{standalone}\\usepackage{amsmath}\\begin{document}\\Large" +
 		text + "\\end{document}";
 
 	char* tex_to_compile = (char*)new_text.data();
