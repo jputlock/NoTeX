@@ -1,28 +1,30 @@
 
 #include <gtkmm.h>
 #include <iostream>
+#include <pangomm.h>
+#include <string>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <string>
 
 #include "clickableimage.h"
 
 class NotexView : public Gtk::ScrolledWindow {
-public:
-    NotexView ();
-    virtual ~NotexView();
+  public:
+	NotexView();
+	virtual ~NotexView();
 
-    void set_text(const std::string& text);
-    const std::string get_text();
+	void set_text(const std::string& text);
+	const std::string get_text();
 
-    void hook_idle();
+	void hook_idle();
+	void on_resize();
 
-    bool scan_for_tex();
-    int render_tex(const Glib::ustring& text, int num_rendered,
-                                                        std::string& filename);
+	bool scan_for_tex();
+	int render_tex(const Glib::ustring& text, int num_rendered,
+				   std::string& filename);
 
-protected:
-    Gtk::TextView m_textview;
-    int m_count;
-
+  protected:
+	Gtk::TextView m_textview;
+	int m_count;
+	unsigned int font_size;
 };

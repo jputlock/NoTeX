@@ -7,11 +7,8 @@
 
 #include <iostream>
 
-namespace Debug
-{
-    void debug_print(const std::string& message) {
-        std::cout << message;
-    }
-}
+namespace Debug {
+void debug_print(const std::string& message) { std::cout << message; }
+} // namespace Debug
 
 #endif
