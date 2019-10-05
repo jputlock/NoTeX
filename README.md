@@ -30,6 +30,7 @@ Note that installation instructions of these dependencies may differ between ope
 6. Run with `./NoTeX`
 
 ### Sharing your Contributions
+Before submitting your code, make sure to check the [Contribution Guidelines](CONTRIBUTING.md).
 
 1. Write your code into your local clone of your fork.
 

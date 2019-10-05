@@ -11,7 +11,4 @@
  *
  */
 
-class Module {
-
-
-};
+class Module {};
