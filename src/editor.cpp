@@ -27,7 +27,9 @@ Editor::Editor() : Gtk::ApplicationWindow() {
 }
 
 void Editor::on_resize() {
+#ifdef DEBUG
 	std::cout << "editor resized!" << std::endl;
+#endif
 
 	if (current_editing_window)
 		this->current_editing_window->check_resize();
