@@ -9,7 +9,7 @@
 #include "editor.h"
 
 class EditorApplication : public Gtk::Application {
-  protected:
+protected:
 	Editor editor;
 
 	void on_startup() override { Gtk::Application::on_startup(); }
@@ -23,7 +23,7 @@ class EditorApplication : public Gtk::Application {
 		editor.show_all();
 	}
 
-  public:
+public:
 	static Glib::RefPtr<EditorApplication> create() {
 		return Glib::RefPtr<EditorApplication>(new EditorApplication());
 	}

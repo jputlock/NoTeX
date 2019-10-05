@@ -9,7 +9,7 @@
 #include "clickableimage.h"
 
 class NotexView : public Gtk::ScrolledWindow {
-  public:
+public:
 	NotexView();
 	virtual ~NotexView();
 
@@ -23,7 +23,7 @@ class NotexView : public Gtk::ScrolledWindow {
 	int render_tex(const Glib::ustring& text, int num_rendered,
 				   std::string& filename);
 
-  protected:
+protected:
 	Gtk::TextView m_textview;
 	int m_count;
 	unsigned int font_size;

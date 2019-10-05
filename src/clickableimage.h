@@ -6,11 +6,11 @@
 #include <gtkmm/image.h>
 
 class ClickableImage : public Gtk::EventBox {
-  protected:
+protected:
 	Gtk::Image img;
 	Glib::ustring tex_contents;
 
-  public:
+public:
 	ClickableImage(const std::string& file_name, const Glib::ustring& tex)
 		: Gtk::EventBox() {
 		// add the image

@@ -10,10 +10,10 @@
  *
  */
 class ModuleList {
-  private:
+private:
 	int x;
 
-  public:
+public:
 	// Default Constructor
 	ModuleTree() {}
 };

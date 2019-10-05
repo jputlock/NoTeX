@@ -10,11 +10,11 @@
 
 class Editor : public Gtk::ApplicationWindow {
 
-  public:
+public:
 	Editor();
 	virtual ~Editor();
 
-  protected:
+protected:
 	// Signal handlers:
 	void on_button_clicked();
 
@@ -31,7 +31,7 @@ class Editor : public Gtk::ApplicationWindow {
 
 	// in case we need a separator in the submenu
 	// Gtk::SeparatorMenuItem hline;
-  private:
+private:
 	void init_menubar();
 	void on_menu_file_new();
 	void on_menu_file_open();
