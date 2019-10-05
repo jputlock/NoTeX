@@ -4,12 +4,6 @@ NoTeX is a lightweight TeX editor made for Computer Science and Mathematics stud
 ## Development
 Interested in development? Great! Below are a set of instructions to quick start you into the development process. You can also join the [Discord](https://discord.gg/wGJrKBz) for communicating with other developers.
 
-### Dependencies
-The project has dependencies on:
-NoTeX also takes advantage of the following open source projects:
-
-- [pdf2svg](https://github.com/dawbarton/pdf2svg)
-
 ### Installation and Setup
 
 1. [Fork the repository](https://help.github.com/en/articles/fork-a-repo#fork-an-example-repository).
@@ -36,9 +30,5 @@ Before submitting your code, make sure to check the [Contribution Guidelines](CO
 
 2. Commit and push your changes to your fork.
 
-3. Go to the [main repository](https://github.com/team-notex/NoTeX).
-
-4. Click the "Pull Requests" tab.
-
-5. Create a pull request. If you are unfamiliar, follow [these instructions](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork).
+3. Go to the [main repository](https://github.com/team-notex/NoTeX) and create a pull request. If you are unfamiliar, click on the "Pull Requests" tab and follow [these instructions](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork).
 
