@@ -63,7 +63,7 @@ void NotexView::on_resize() {
 }
 
 void NotexView::hook_idle() {
-	Glib::signal_idle().connect(sigc::mem_fun(*this, &NotexView::scan_for_tex));
+	Glib::signal_idle().connect(sigc::mem_fun(*this, &NotexView::scan_tex_full));
 }
 
 NotexView::~NotexView() {
@@ -73,23 +73,32 @@ NotexView::~NotexView() {
 }
 
 bool NotexView::scan_tex_full() {
-	Gtk::TextBuffer textBuffer = this->m_textview.get_buffer();
+	Glib::RefPtr<Gtk::TextBuffer> textBuffer = this->m_textview.get_buffer();
 
 	// get packages
-	std::regex package_finder("\\usepackage(\[.*?\])?\{.*?\}");
+	std::regex package_finder(R"(\\usepackage(?:\[.*?\])?\{.*?\})");
 
 	// identify tex chunks
 
 	// these find starts and ends
-	std::regex tex_inline_mm("[^\\](\$)|^(\$)");
-	std::regex tex_std_mm("[^\\](\$\$)|^(\$\$)");
+	std::regex tex_inline_mm(R"((?<!(\\|\$))\$(?!(\\|\$))[^\$]*?(?<!(\\|\$))\$(?!(\\|\$)))");
+	std::regex tex_std_mm(R"((?<!(\\|\$))\$\$(?!(\\|\$))[^\$]*?(?<!(\\|\$))\$\$)");
 
 	// these will conveniently find full chunks
-	std::regex latex_inline_mm("\\\(.*?\\\)");
-	std::regex latex_std_mm("\\\[.*?\\\]");
+	std::regex latex_inline_mm(R"(\\\([^$]*?\\\))");
+	std::regex latex_std_mm(R"(\\\[[^$]*?\\\])");
 
-	
+	std::smatch match;
 
+	std::string temp_text = textBuffer->get_text();
+
+	if (std::regex_search(temp_text, match, tex_std_mm)) {
+		// there was a match
+		std::cout << "Found $$ $$" << std::endl;
+	}
+
+
+	return false;
 }
 
 void NotexView::recover_tex(Gtk::TextChildAnchor& anchor) {

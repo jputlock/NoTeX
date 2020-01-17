@@ -167,7 +167,7 @@ void Editor::on_menu_file_open() {
 	}
 
 	Glib::signal_idle().connect(
-		sigc::mem_fun(*editing_window, &NotexView::scan_for_tex));
+		sigc::mem_fun(*editing_window, &NotexView::scan_tex_full));
 }
 
 /** @brief Opens a filestream to chosen file and writes the current TextView
