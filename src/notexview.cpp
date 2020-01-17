@@ -1,5 +1,6 @@
 
 #include "notexview.h"
+#include <regex>
 
 #include "include/pdf2svg/pdf2svg.c"
 
@@ -26,12 +27,14 @@ NotexView::NotexView() : Gtk::ScrolledWindow() {
 
 	this->m_textview.set_buffer(textBuffer);
 
+	// create a larger font
 	Pango::FontDescription font =
 		this->m_textview.get_style_context()->get_font();
 
 	font.set_size(Pango::SCALE * font_size);
 	this->m_textview.override_font(font);
 
+	// create the updater hook
 	textBuffer->signal_end_user_action().connect(
 		sigc::mem_fun(*this, &NotexView::hook_idle));
 
@@ -69,77 +72,28 @@ NotexView::~NotexView() {
 #endif
 }
 
-bool NotexView::scan_for_tex() {
-	auto textBuffer = this->m_textview.get_buffer();
+bool NotexView::scan_tex_full() {
+	Gtk::TextBuffer textBuffer = this->m_textview.get_buffer();
 
-	// todo: implement the data structure to add marks where start/end points
-	// are
+	// get packages
+	std::regex package_finder("\\usepackage(\[.*?\])?\{.*?\}");
 
-	size_t start = 0, end = 0;
+	// identify tex chunks
 
-	// iterate through the buffer
-	start = textBuffer->get_text().find("\\(");
-	if (start == std::string::npos) {
-		return false;
-	}
-	end = textBuffer->get_text().find("\\)");
-	if (end == std::string::npos) {
-		return false;
-	}
-	end += 2;
+	// these find starts and ends
+	std::regex tex_inline_mm("[^\\](\$)|^(\$)");
+	std::regex tex_std_mm("[^\\](\$\$)|^(\$\$)");
 
-	// todo: this is generally a slow O(n) operation, should be able to speed
-	// it up with a hashtable lookup?
+	// these will conveniently find full chunks
+	std::regex latex_inline_mm("\\\(.*?\\\)");
+	std::regex latex_std_mm("\\\[.*?\\\]");
 
-	// shift the indices by the number of pictures before it
-	for (int i = 0; i < start; i++) {
-		if (textBuffer->get_iter_at_offset(i).get_char() == 0xFFFC) {
-			start++;
-			end++;
-		}
-	}
+	
 
-	// grab the iterators at the locations
-	auto start_iter = textBuffer->get_iter_at_offset(start);
-	auto end_iter = textBuffer->get_iter_at_offset(end);
+}
 
-	std::string tex = textBuffer->get_text(start_iter, end_iter);
+void NotexView::recover_tex(Gtk::TextChildAnchor& anchor) {
 
-#ifdef DEBUG
-	std::cout << "Rendering \"" + tex + "\"" << std::endl;
-#endif
-
-	std::string filename;
-	this->render_tex(tex, this->m_count, filename);
-	std::cout << "filename = " << filename << std::endl;
-
-	// note: this mark doesnt follow the picture if text inserted in the exact
-	// char before the picture but this shouldn't be an issue once we implement
-	// picture -> tex functionality
-	auto mark_start =
-		textBuffer->create_mark("startTex" + this->m_count, start_iter);
-	auto mark_end = textBuffer->create_mark("endTex", end_iter);
-
-	this->m_count++;
-
-	textBuffer->erase(mark_start->get_iter(), mark_end->get_iter());
-
-#ifdef DEBUG
-	std::cout << "\nNew text:" << textBuffer->get_text() << std::endl;
-#endif
-
-	auto img = Gtk::make_managed<ClickableImage>(filename, tex);
-
-	// todo: cleanup ClickableImage, Anchor, and Mark on deletion
-	auto anc = textBuffer->create_child_anchor(mark_start->get_iter());
-	this->m_textview.add_child_at_anchor(*img, anc);
-	img->show();
-
-	// mark_start->set_visible(true);
-
-	textBuffer->delete_mark(mark_end);
-
-	return true;
 }
 
 /** @brief Converts a string of TeX into an SVG at file denoted by string
@@ -155,7 +109,6 @@ bool NotexView::scan_for_tex() {
  */
 int NotexView::render_tex(const Glib::ustring& text, int num_rendered,
 						  std::string& filename) {
-
 	/* todo: append \\usepackage {package} for each package included at the top
 	 */
 	auto new_text = "\\documentclass[20pt]{standalone}\\usepackage{amsmath}"
@@ -167,10 +120,14 @@ int NotexView::render_tex(const Glib::ustring& text, int num_rendered,
 	filename = "temp" + std::to_string(num_rendered) + ".svg";
 	char* file_out = (char*)filename.data();
 
+
+	// todo: don't use fork i guess??
 	int pid = fork();
 
 	// child
 	if (pid == 0) {
+
+		// todo: collect their latex install location from settings
 		char* args[] = {(char*)"pdflatex", (char*)"-interaction=nonstopmode",
 						(char*)"-halt-on-error", tex_to_compile, NULL};
 
@@ -202,7 +159,6 @@ int NotexView::render_tex(const Glib::ustring& text, int num_rendered,
 
 	pid = fork();
 	if (pid == 0) {
-
 		char* args[] = {(char*)"rm", (char*)"standalone.aux",
 						(char*)"standalone.pdf", (char*)"standalone.log", &filename[0], NULL};
 		int exit_code = execvp(args[0], args);

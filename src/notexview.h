@@ -5,6 +5,7 @@
 #include <string>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <list>
 
 #include "clickableimage.h"
 
@@ -19,12 +20,15 @@ public:
 	void hook_idle();
 	void on_resize();
 
-	bool scan_for_tex();
-	int render_tex(const Glib::ustring& text, int num_rendered,
-				   std::string& filename);
+	bool scan_tex_full();
+
+	int render_tex(const Glib::ustring& text, int num_rendered, std::string& filename);
+	void recover_tex(Gtk::TextChildAnchor& anchor);
 
 protected:
 	Gtk::TextView m_textview;
 	int m_count;
 	unsigned int font_size;
+	std::list<Gtk::TextChildAnchor> anchors;
+	std::list<std::string> imported_packages;
 };
