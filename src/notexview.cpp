@@ -173,7 +173,7 @@ int NotexView::render_tex(const Glib::ustring& text, int num_rendered,
 	// child
 	if (pid == 0) {
 		char* args[] = {(char*)"pdflatex", (char*)"-interaction=nonstopmode",
-						(char*)"-halt-on-error", tex_to_compile, NULL};
+						(char*)"-halt-on-error", (char*)"-jobname=texpiece", tex_to_compile, NULL};
 
 		// call PDFLatex to compile into a standalone PDF
 		int exit_code = execvp(args[0], args);
@@ -189,14 +189,13 @@ int NotexView::render_tex(const Glib::ustring& text, int num_rendered,
 		return status;
 	}
 
-	char* pdf_name = (char*)"standalone.pdf";
-
+	char* pdf_name = (char*)"texpiece.pdf";
 	char* args[] = {(char*)"pdf2svg", pdf_name, file_out, NULL};
 
 	int exit_code = pdf2svg(3, args);
 
 	// Wait for the SVG to be generated
-	if (status == -1) {
+	if (status < 0) {
 		perror("SVG generation failed");
 		return status;
 	}
@@ -204,8 +203,8 @@ int NotexView::render_tex(const Glib::ustring& text, int num_rendered,
 	pid = fork();
 	if (pid == 0) {
 
-		char* args[] = {(char*)"rm", (char*)"standalone.aux",
-						(char*)"standalone.pdf", (char*)"standalone.log", &filename[0], NULL};
+		char* args[] = {(char*)"rm", (char*)"texpiece.aux",
+						(char*)"texpiece.pdf", (char*)"texpiece.log", &filename[0], NULL};
 		int exit_code = execvp(args[0], args);
 
 		return exit_code;

@@ -108,7 +108,6 @@ int pdf2svg(int argn, char *args[])
 
 	// Open the PDF file
 	pdffile = poppler_document_new_from_file(filename_uri, NULL, NULL);
-	fprintf(stderr, "FILENAME: %s\nABS: %s\n", filename_uri, absoluteFileName);
 	g_free(filename_uri);
 	if (pdffile == NULL) {
 		fprintf(stderr, "Unable to open file\n");

@@ -84,7 +84,7 @@ void Editor::on_menu_file_new() {
 
 	NotexView* editing_window = Gtk::make_managed<NotexView>();
 	this->editing_windows.push_back(editing_window);
-	this->m_fixed.put(*editing_window, 0, 30);
+	this->m_fixed.put(*editing_window, 0, 36);
 	editing_window->set_text(
 		"Welcome to NoTeX. Please note that this program does not recognize TeX"
 		" delimiters ($ $ and $$ $$) to start mathmode. Please use the LaTeX"
@@ -101,7 +101,7 @@ void Editor::on_menu_file_open() {
 	// todo: make tab manager to make this not go wild
 	NotexView* editing_window = Gtk::make_managed<NotexView>();
 	this->editing_windows.push_back(editing_window);
-	this->m_fixed.put(*editing_window, 0, 30);
+	this->m_fixed.put(*editing_window, 0, 36);
 	this->current_editing_window = editing_window;
 
 	Gtk::FileChooserDialog file_chooser("Select a file",
