@@ -5,25 +5,26 @@ FIND_PACKAGE(PkgConfig REQUIRED)
 pkg_check_modules(CAIRO REQUIRED cairo>=1.2.6)
 pkg_check_modules(POPPLERGLIB REQUIRED poppler-glib>=0.5.4)
 pkg_check_modules(GLIB REQUIRED glib-2.0)
+message("Building pdf2svg library (pdf2svg)")
 
-list(APPEND DEP_LIBS
-    ${GLIB_LIBRARIES}
-    ${POPPLERGLIB_LIBRARIES}
-    ${GLIB_LIBRARIES}
-)
 
-# Print versions
-message("Building Converter (pdf2svg)")
-
-add_library(Converter
+# target
+add_library(pdf2svg STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/pdf2svg.c
 )
 
-target_link_libraries(Converter ${DEP_LIBS})
-
-target_include_directories(Converter
+# include
+target_include_directories(pdf2svg
     PUBLIC
         ${POPPLERGLIB_INCLUDE_DIRS}
         ${CAIRO_INCLUDE_DIRS}
         ${GLIB_INCLUDE_DIRS}
 )
+
+# external libs
+list(APPEND DEP_LIBS
+    ${GLIB_LIBRARIES}
+    ${POPPLERGLIB_LIBRARIES}
+    ${GLIB_LIBRARIES}
+)
+target_link_libraries(pdf2svg ${DEP_LIBS})

@@ -18,7 +18,6 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Definitely works with Cairo v1.2.6 and Poppler 0.5.4
-
 #include <assert.h>
 #include <stdlib.h>
 #include <glib.h>
@@ -29,6 +28,7 @@
 #include <cairo-svg.h>
 #include <stdio.h>
 #include <string.h>
+#include "pdf2svg.h"
 
 // Begin theft from ePDFview (Copyright (C) 2006 Emma's Software) under the GPL
 gchar *getAbsoluteFileName(const gchar *fileName)

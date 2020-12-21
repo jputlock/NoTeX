@@ -1,7 +1,6 @@
 
-#include "notexview.h"
-
-#include "include/pdf2svg/pdf2svg.c"
+#include "src/notexview.h"
+#include "libs/pdf2svg/pdf2svg.h"
 
 NotexView::NotexView() : Gtk::ScrolledWindow() {
 	this->set_hexpand(true);
