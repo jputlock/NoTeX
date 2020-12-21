@@ -24,13 +24,14 @@ add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 # Include
 add_subdirectory(src)
 target_include_directories(${PROJECT_NAME}
-    PUBLIC
-        ${PROJECT_BINARY_DIR}
+    PUBLIC ${PROJECT_BINARY_DIR}
+    PUBLIC ../libs/pdf2svg
 )
 
 # External libraries
 add_subdirectory(libs/pdf2svg)
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
-    Source pdf2svg
+        Source
+        pdf2svg
 )

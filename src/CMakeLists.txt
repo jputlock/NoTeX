@@ -24,4 +24,5 @@ target_include_directories(Source
 target_link_libraries(Source
 	Containers
 	${GTK_LIBRARIES}
+	pdf2svg
 )

@@ -9,7 +9,7 @@ message("Building pdf2svg library (pdf2svg)")
 
 
 # target
-add_library(pdf2svg STATIC
+add_library(pdf2svg OBJECT
     ${CMAKE_CURRENT_SOURCE_DIR}/pdf2svg.c
 )
 

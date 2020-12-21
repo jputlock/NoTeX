@@ -1,6 +1,8 @@
 
 #include "src/notexview.h"
-#include "libs/pdf2svg/pdf2svg.h"
+extern "C" {
+	#include "libs/pdf2svg/pdf2svg.h"
+}
 
 NotexView::NotexView() : Gtk::ScrolledWindow() {
 	this->set_hexpand(true);
@@ -47,13 +49,13 @@ void NotexView::on_resize() {
 		int width = -1, height = -1;
 
 		// grab the editor's size
-		width = editor->get_allocated_width();
-		height = editor->get_allocated_height();
+		width = editor->get_allocated_width() - 4;
+		height = editor->get_allocated_height() - 40;
 
 		this->set_size_request(width, height);
 
 #ifdef DEBUG
-		std::cout << "view resized!" << std::endl;
+		std::cout << "view resized to (" << width << ", " << height << ")" << std::endl;
 #endif
 	}
 }
